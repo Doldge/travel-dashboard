@@ -1,0 +1,14 @@
+#! /usr/bin/python
+import os.path
+
+FACEBOOK_APPID = ''
+FACEBOOK_APPSECRET = ''
+ASSETS_DEBUG = DEBUG = True
+
+if DEBUG:
+    SEND_FILE_MAX_AGE_DEFAULT = 0
+
+REQUIREJS_BIN = os.path.dirname(__file__) + '/../node_modules/requirejs/bin/r.js'
+REQUIREJS_CONFIG = 'js/build.js'
+REQUIREJS_RUN_IN_DEBUG = False
+

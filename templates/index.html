@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | The Traveller's Journey</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendors/Materialize/dist/css/materialize.min.css') }}" media="screen,projection">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1>{{ title }}</h1>
+        <div class="distance-from-home">
+        </div>
+        <div class="total-distance-travelled">
+        </div>
+        <div class="time-since-home">
+        </div>
+        <div class="friend-count">
+        </div>
+        <div class="locations-visited-list">
+        </div>
+        <div class="locations-visited-map">
+        </div>
+      </div>
+    </div>
+  {%- if config.get("ASSETS_DEBUG") -%}
+    <script src="{{ url_for('static', filename='vendors/requirejs/require.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+    <!--<script src="{{ url_for('static', filename='vendors/Materialize/dist/js/materialize.min.js') }}"></script>-->
+  {%- else -%}
+    <script src="{{ url_for('static', filename='vendors/almond/almond.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='vendors/Materialize/dist/js/materialize.min.js') }}"></script>
+  {%- endif -%}
+  {% assets "js/app.js" -%}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets -%}
+  </body>
+</html>
