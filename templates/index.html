@@ -22,19 +22,28 @@
         </div>
         <div class="locations-visited-list">
         </div>
-        <div class="locations-visited-map">
+        <div class="locations-visited-map col s12 m12 l12">
         </div>
       </div>
     </div>
   {%- if config.get("ASSETS_DEBUG") -%}
     <script src="{{ url_for('static', filename='vendors/requirejs/require.js') }}"></script>
     <script src="{{ url_for('static', filename='js/config.js') }}"></script>
-    <!--<script src="{{ url_for('static', filename='vendors/Materialize/dist/js/materialize.min.js') }}"></script>-->
+    <script>
+    var Public = function() {
+      return {
+        id : {{ id }},
+        mapKey : "{{ config['MAPS_KEY'] }}"
+      }
+    }();
+    </script>
+    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config['MAPS_KEY'] }}&callback=initMap"></script>-->
   {%- else -%}
     <script src="{{ url_for('static', filename='vendors/almond/almond.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='vendors/Materialize/dist/js/materialize.min.js') }}"></script>
   {%- endif -%}
+    <script src="{{ url_for('static', filename='js/global.js') }}"></script>
   {% assets "js/app.js" -%}
     <script src="{{ ASSET_URL }}"></script>
   {% endassets -%}

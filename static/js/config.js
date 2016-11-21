@@ -8,10 +8,16 @@ requirejs.config({
     react : 'vendors/react/react-with-addons',
     'react-dom' : 'vendors/react/react-dom',
     'mdl' : 'vendors/material-design-lite/material.min',
-    'materialize' : 'vendors/Materialize/dist/js/materialize',
-    'marked' : 'vendors/marked/marked.min'
+    'materialize' : 'vendors/materializecss-amd/dist/materialize.amd',
+    'marked' : 'vendors/marked/marked.min',
+    'hammerjs' : 'vendors/Materialize/js/jquery.hammer',
+  },
+  shim : {
+    materialize : {
+      deps : [ 'jquery' ]
+    }
   },
   jsx : {
     fileExtension : '.jsx',
-  }
+  },
 });

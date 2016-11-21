@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block toptext -%}
+<div class="row">
+  <div class="col m6 l4 s8 offset-m3 offset-s2 offset-l4">
+      <div class="card white hoverable">
+        <div class="card-content">
+          <div class="card-title">Sign Up</div>
+          <div class="card-content">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="card-panel red darken-3">
+                  <span class="">
+                  {% for message in messages %}
+                    {{ message }}<br/>
+                  {% endfor %}
+                  </span>
+                </div>
+              {% endif %}
+            {% endwith %}
+            <form class="" method="POST" action="/signup/">
+            <div class="input-field">
+              <input name="email" type="email" class="validate" />
+              <label for="email" class="">Email Address</label>
+            </div>
+            <div class="input-field">
+              <input name="username" type="text" class="validate" autocomplete="off"/>
+              <label for="username" class="">Username</label>
+            </div>
+            <div class="input-field">
+              <input name="password" type="password" class="validate" autocomplete="off"/>
+              <label for="password" class="">Password</label>
+            </div>
+            <div class="fix-me">
+              <input name="t_and_c" type="checkbox" class="validate"/>
+              <label for="t_and_c" class="black-text">
+                I have read and accept the Terms and Conditions.
+              </label>
+            </div>
+            <div class="input-field">
+                <button type="button" class="btn waves-effect waves-light blue darken-3" name="facebook">Grant Facebook Access
+                <i class="fa fa-facebook right"></i>
+              </button>
+              <button class="btn waves-effect waves-light" type="submit" name="action">Sign Up
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<div id="plz_tc" class="modal">
+    <div class="modal-content">
+      <h4></h4>
+      <p>You need to accept the terms and conditions before you can sign up.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">OK</a>
+    </div>
+</div>
+<div id="plz_fb" class="modal">
+    <div class="modal-content">
+      <h4></h4>
+      <p>You need to grant the app access to your Facebook account before continuing.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">OK</a>
+    </div>
+</div>
+{% endblock -%}
+{% block react -%}
+  {% assets "js/signup.js" -%}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets -%}
+{% endblock -%}
+{% block facebook -%}
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1511693772463285',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  function myFacebookLogin() {
+      FB.login(function( response ){
+        console.log( response );
+        $('form').append('<input type="hidden" name="token" value="'+response.authResponse.accessToken+'!'+response.authResponse.userID+'!'+response.authResponse.expiresIn+'!'+response.authResponse.signedRequest+'"/>');
+      }, {scope: 'user_friends,user_tagged_places,user_actions.news,user_location,user_hometown'});
+    };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+{% endblock -%}

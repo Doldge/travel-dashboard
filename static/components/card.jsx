@@ -1,6 +1,6 @@
 define(function(require, exports, module) {
-    var React = require('react')
-    var marked = require('marked');
+    var React = require('react');
+    var Loader = require('jsx!components/loader');
 
     module.exports = React.createClass({
         getDefaultProps: function() {
@@ -12,9 +12,12 @@ define(function(require, exports, module) {
                 successFunction : null,
                 height : '',
                 width : 's12 m6',
-                icon : ''
+                icon : '',
+                visible : ''
             }
         },
+
+
         rawIcon: function() {
             if ( this.props.icon )
                 return { __html : '<i style="font-size: 470%; opacity : 0.7" class="material-icons">'+this.props.icon+'</i>' };
@@ -34,8 +37,9 @@ define(function(require, exports, module) {
             if ( this.props.source != null )
             {
                 var res = $.get( this.props.source );
+                this.setProps({ source : null });
                 if ( this.props.successFunction )
-                    res.success( this.props.successFunction )
+                    res.success( this.props.successFunction );
                 else
                     res.success( function( data ) {
                         this.setState({
@@ -55,6 +59,7 @@ define(function(require, exports, module) {
                                 <span className="card-title" dangerouslySetInnerHTML={ this.rawTitle() }/>
                             </div>
                             <div className="section">
+                                <Loader visible={(this.props.source != null)?'':'hidden'}/>
                                 <div dangerouslySetInnerHTML={ this.rawContent() }/>
                             </div>
                         </div>

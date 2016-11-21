@@ -18,7 +18,8 @@
     react : "vendors/react/react-with-addons.min",
     "react-dom" : "vendors/react/react-dom.min",
     "material" : "vendors/material-design-lite/material.min",
-    'marked' : 'vendors/marked/marked.min'
+    'marked' : 'vendors/marked/marked.min',
+    'hammerjs' : 'vendors/Materialize/js/jquery.hammer'
   },
   jsx : {
     fileExtension : ".jsx"

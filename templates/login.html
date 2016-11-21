@@ -6,6 +6,9 @@
         <div class="card-content white-text">
           <div class="card-title">Log In</div>
           <div class="card-content">
+          {% block flash -%}
+            {{ super() }}
+          {% endblock -%}
             <form class="" method="POST" action="/login/">
             <div class="input-field">
               <input name="username_{{ secret -}}" type="text" class="validate white-text" autocomplete="off"/>
@@ -26,4 +29,7 @@
 </div>
 {% endblock -%}
 {% block react -%}
+ {% assets "js/signup.js" -%}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets -%}
 {% endblock -%}

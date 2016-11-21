@@ -23,6 +23,7 @@
     "almond": "~0.3.1",
     "jsx-requirejs-plugin": "~0.6.2",
     "material-design-lite": "~1.0.6",
-    "marked": "~0.3.5"
+    "marked": "~0.3.5",
+    "Materialize": "materialize#0.97.2"
   }
 }

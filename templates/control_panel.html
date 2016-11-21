@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block contents -%}
+  {% block navigation -%}
+    {{ super() }}
+  {% endblock -%}
+<div class="container">
+  <div class="row">
+    <h2 class="center">{{ row.firstname }}'s Control Panel</h2>
+    <div class="col s10 m8 l8">
+      {%- block flash -%}
+        {{ super() }}
+      {%- endblock -%}
+    </div>
+		<div class="col s8 m6 l6">
+	    <form method='POST' action="{{ url_for('myAccount._update') }}">
+  	  <div class="input-field">
+    	  <input type="date" class="datepicker" name="start_date" data-value="{{ row['startdate'] }}"/>
+      	<label for="start_date" class="">Departure Date</label>
+    	</div>
+      <div class="input-field timepicker-wrapper">
+        <input type="time" class="timepicker" name="start_time" value="{{ row['starttime'] }}"/>
+        <!--<label for="start_time" class="">Start Time</label>-->
+      </div>
+			<input type="hidden" name="frontend" value="1"/>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Set Departure Date/Time</button>
+	    </form>
+		</div>
+		<form method='POST' action="{{ url_for('myAccount._myFacebook') }}" class="facebook_form">
+      <br/><br/>
+      <p class="center valign">This is your travel control panel. Please set up your departure date and time. <br/>Once completed, you can update your travel details from facebook.</p>
+      <br/>
+			<input type="hidden" name="frontend" value="1"/>
+    	<div class="col m6 center">
+      	<button class="btn blue">Update From Facebook</button>
+    	</div>
+		</form>
+      <!--
+      {% if config['DEBUG'] -%}
+        {% for key, value in row.iteritems() %}
+          {{ key }} = {{ value }}
+        {% endfor %}
+      {% endif -%}
+      -->
+    <div class="col s9 m9 l9">
+      <p class="center valign">This map shows the locations you've visited since your departure date. Below it you'll find various statistics about your travels.</p>
+      <div id="map" style="width: 98%; height: 65%;"></div>
+    </div>
+    <div class="col s3 m3 l3">
+      <table class="bordered">
+        <thead>
+          <tr>
+              <td>Name</td>
+              <td>Date</td>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for location in locations %}
+            <tr>
+                <td>{{ location['name'].decode('UTF-8') }}</td>
+                <td>{{ location['visit_date']}}</td>
+            </tr>
+          {% endfor -%}
+        </tbody>
+      </table>
+    </div>
+    <div class="distance-from-home"></div>
+    <div class="total-distance-travelled"></div>
+    <div class="time-since-home"></div>
+    <div class="friend-count"></div>
+  </div>
+</div>
+{% endblock -%}
+{% block react -%}
+  {% assets "js/control_panel.js" -%}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets -%}
+{% endblock -%}
+{% block facebook -%}
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1511693772463285',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+  
+	function myFacebookLogin() {
+      FB.login(function( response ){
+        console.log( response );
+        $('.facebook_form').append('<input type="hidden" name="token" value="'+response.authResponse.accessToken+'!'+response.authResponse.userID+'!'+response.authResponse.expiresIn+'!'+response.authResponse.signedRequest+'"/>');
+				$('.facebook_form').submit();
+      }, {scope: 'user_friends,user_tagged_places,user_actions.news,user_location,user_hometown'});
+    };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+{% endblock -%}
+{% block scripts -%}
+  {{ super() }}
+  <script>
+  var initMap = function() {
+    map = new google.maps.Map(
+      document.getElementById('map'), 
+      {
+        center: {lat: 40, lng: 0},
+        zoom: 2,
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+      }
+    );
+    window.map = map;
+  }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config['MAPS_KEY'] }}&callback=initMap"></script>
+  <script src="{{ url_for('static', filename='js/global.js')}}"></script>
+{% endblock -%}
